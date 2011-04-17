@@ -8,7 +8,7 @@ set_include_path(
 	. '../../outlet-orm/' . PATH_SEPARATOR
 	. '../../display-objects/' . PATH_SEPARATOR
 );
-
+echo '<pre>';
 require '../application/core/launch.php';
 
 $app = WebApplication::getInstance();

@@ -8,11 +8,12 @@ require 'application/org.outlet-orm/autoloader/OutletAutoloader.php';
 
 ActionMapperAutoLoader::register();
 DisplayObjectsAutoloader::register();
-AtlasScAutoloader::register();
+LoginAutoloader::register();
 OutletAutoloader::register();
 
 UIComponent::appendHtmlDir(dirname(__FILE__) . '/../../templates/');
 UIComponent::appendHtmlDir(dirname(__FILE__) . '/../../../display-objects/templates/');
 
+//Outlet::init(dirname(__FILE__) . '/../../config/outlet-config.php');
 Outlet::init(dirname(__FILE__) . '/../../config/db.xml');
 ?>

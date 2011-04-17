@@ -1,12 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<outlet-config xmlns="http://www.outlet-orm.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.outlet-orm.org /Server/git-repos/outlet-orm/resources/outlet-config.xsd ">
+<outlet-config xmlns="http://www.outlet-orm.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.outlet-orm.org/Server/git-repos/outlet-orm/resources/outlet-config.xsd ">
 	<connection>
 		<dialect>mysql</dialect>
-		<dsn>mysql:host=127.0.0.1;dbname=atlas</dsn>
+		<dsn>mysql:host=127.0.0.1;dbname=login</dsn>
 		<username>root</username>
 		<password></password>
 	</connection>
 	<classes>
-	
+		<class name="Pessoa" table="pessoa"> 
+			<property name="id" column="id" type="int" pk="true" autoIncrement="true"/> 
+			<property name="dataCadastro" column="datacadastro" type="datetime"/> 
+			<property name="situacao" column="situacao" type="int"/> 
+			<association type="one-to-many" classReference="Usuario" key="pessoaId" name="usuario" plural="usuarios"/>
+			<association type="one-to-many" classReference="PessoaFisica" key="pessoaId" name="pessoaFisica" plural="pessoaFisicas"/>
+			<association type="many-to-many" classReference="Contato" table="pessoa_contato" tableKeyLocal="pessoa_id" tableKeyForeign="contato_id" plural="contatos"/>
+			<association type="many-to-many" classReference="Endereco" table="pessoa_endereco" tableKeyLocal="pessoa_id" tableKeyForeign="endereco_id" plural="enderecos"/>
+		</class>
+		<class name="Usuario" table="usuario"> 
+			<property name="id" column="id" type="int" pk="true" autoIncrement="true"/> 
+			<property name="login" column="login" type="varchar"/> 
+			<property name="senha" column="senha" type="varchar"/>
+			<property name="tipo" column="tipo" type="varchar"/>
+			<property name="pessoaId" column="pessoa_id" type="int"/>
+			<association type="many-to-one" classReference="Pessoa" key="pessoaId" name="pessoa"/>
+			<association type="one-to-many" classReference="Acesso" key="usuarioId" name="acesso" plural="acessos"/>
+		</class>
+		<class name="Acesso" table="acesso"> 
+			<property name="id" column="id" type="int" pk="true" autoIncrement="true"/> 
+			<property name="tipo" column="tipo" type="varchar"/> 
+			<property name="momento" column="momento" type="varchar"/>
+			<property name="usuarioId" column="usuario_id" type="int"/>
+			<association type="many-to-one" classReference="Usuario" key="usuarioId" name="usuario"/>
+		</class>
+		<class name="PessoaFisica" table="pessoafisica"> 
+			<property name="id" column="id" type="int" pk="true" autoIncrement="true"/> 
+			<property name="nome" column="nome" type="varchar"/> 
+			<property name="cpf" column="cpf" type="varchar"/>
+			<property name="sexo" column="sexo" type="varchar"/>
+			<property name="pessoaId" column="pessoa_id" type="int"/>
+			<association type="many-to-one" classReference="Pessoa" key="pessoaId" name="pessoa"/>
+		</class>
+		<class name="Contato" table="contato"> 
+			<property name="id" column="id" type="int" pk="true" autoIncrement="true"/> 
+			<property name="tipo" column="tipo" type="varchar"/> 
+			<property name="descricao" column="descricao" type="varchar"/>
+			<property name="pessoaId" column="pessoa_id" type="int"/>
+			<association type="many-to-many" classReference="Pessoa" table="pessoa_contato" tableKeyLocal="contato_id" tableKeyForeign="pessoa_id" plural="pessoas"/>
+		</class>
+		<class name="Endereco" table="endereco"> 
+			<property name="id" column="id" type="int" pk="true" autoIncrement="true"/> 
+			<property name="logradouro" column="logradouro" type="varchar"/> 
+			<property name="numero" column="numero" type="int"/>
+			<property name="complemento" column="complemento" type="varchar"/>
+			<property name="referencia" column="referencia" type="varchar"/> 
+			<property name="tipo" column="tipo" type="varchar"/>
+			<property name="municipioId" column="municipio_id" type="int"/>
+			<association type="many-to-many" classReference="Pessoa" table="pessoa_endereco" tableKeyLocal="endereco_id" tableKeyForeign="pessoa_id" plural="pessoas"/>
+			<association type="many-to-one" classReference="Municipio" key="municipioId" name="municipio"/>
+		</class>
+		<class name="Municipio" table="municipio"> 
+			<property name="id" column="id" type="int" pk="true" autoIncrement="true"/> 
+			<property name="nome" column="nome" type="varchar"/> 
+			<property name="ufId" column="uf_id" type="int"/>
+			<association type="many-to-one" classReference="Uf" key="ufId" name="uf"/>
+			<association type="one-to-many" classReference="Endereco" key="usuarioId" name="endereco" plural="enderecos"/>
+		</class>
+		<class name="Uf" table="uf"> 
+			<property name="id" column="id" type="int" pk="true" autoIncrement="true"/> 
+			<property name="sigla" column="sigla" type="varchar"/> 
+			<property name="nome" column="nome" type="varchar"/> 
+			<property name="paisId" column="pais_id" type="int"/>
+			<association type="many-to-one" classReference="Pais" key="paisId" name="pais"/>
+			<association type="one-to-many" classReference="Municipio" key="ufId" name="municipio" plural="municipios"/>
+		</class>
+		<class name="Pais" table="pais"> 
+			<property name="id" column="id" type="int" pk="true" autoIncrement="true"/> 
+			<property name="iso" column="iso" type="varchar"/>
+			<property name="iso3" column="iso3" type="varchar"/>
+			<property name="nome" column="nome" type="varchar"/> 
+			<association type="one-to-many" classReference="Uf" key="paisId" name="uf" plural="ufs"/>
+		</class>
 	</classes>
 </outlet-config>
