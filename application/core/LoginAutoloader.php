@@ -1,6 +1,5 @@
 <?php
-class AtlasScAutoloader
-{
+class LoginAutoloader {
 	/**
 	 * @var array
 	 */
@@ -9,8 +8,7 @@ class AtlasScAutoloader
 	/**
 	 * @param string $class
 	 */
-	public function load($class)
-	{
+	public function load($class) {
 		if (is_null($this->dir)) {
 			$this->dir = glob(realpath(dirname(__FILE__) . '/../') . '/*');
 		}
@@ -26,8 +24,7 @@ class AtlasScAutoloader
 	 * @param string $path
 	 * @param string $class
 	 */
-	protected function includeClass($path, $class)
-	{
+	protected function includeClass($path, $class) {
 		$file = $path . '/' . $class . '.php';
 		
 		if (is_readable($file)) {
@@ -39,8 +36,7 @@ class AtlasScAutoloader
 		return false;
 	}
 	
-	public static function register()
-	{
+	public static function register() {
 		spl_autoload_register(array(new self(), 'load'));
 	}
 }

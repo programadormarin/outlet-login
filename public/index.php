@@ -9,7 +9,7 @@ set_include_path(
 	. '../../display-objects/' . PATH_SEPARATOR
 );
 
-require 'application/core/launch.php';
+require '../application/core/launch.php';
 
 $app = WebApplication::getInstance();
 $app->run();
