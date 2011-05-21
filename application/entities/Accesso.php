@@ -1,5 +1,5 @@
 <?php
-class Access {
+class Accesso {
 	private $id = null;
 	private $type = null;
 	private $dateHour = null;
